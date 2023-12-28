@@ -5,3 +5,4 @@ Pyyaml
 numpy
 pillow
 gradio
+loguru
