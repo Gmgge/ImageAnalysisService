@@ -26,3 +26,5 @@ models/
 .pytest_cache
 fastapi_doc/
 
+/data/
+/core/ocr/
