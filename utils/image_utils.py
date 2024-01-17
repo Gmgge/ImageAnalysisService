@@ -9,6 +9,11 @@ from PIL import UnidentifiedImageError
 from utils.web_exception import FileNotExistException, UnsupportedParametersException, UnsupportedFileTypeException
 
 
+def check_image_file(path):
+    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'pdf'}
+    return any([path.lower().endswith(e) for e in img_end])
+
+
 def read_image_file(image):
     """
     读取图像信息,并根据推理需要转换为三通道图像，支持本地文件与form-data数据

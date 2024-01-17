@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     test_opt = SealRec()
     # 图像读取
-    image_root = r"F:\project\ImageAnalysisService\tests\core\seal\image"
+    image_root = r"F:\project\seal\data\filter"
     for image_name in os.listdir(image_root):
         image_path = os.path.join(image_root, image_name)
         test_data = read_image_file(image_path)
