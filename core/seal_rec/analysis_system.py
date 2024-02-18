@@ -26,7 +26,7 @@ class SealRec(BaseImageAnalysis):
             one_info = self.seal_rec_module.rec(one_seal_image)
             # 印章识别结果过滤
             if len(one_info) > 0:
-                one_seal_res = {"box": list(boxes[i][-4:]), "info": one_info}
+                one_seal_res = {"box": [x_min, y_min, x_max, y_max], "info": one_info}
                 seal_info.append(one_seal_res)
         return seal_info
 
@@ -34,7 +34,6 @@ class SealRec(BaseImageAnalysis):
 if __name__ == "__main__":
     import cv2
     import os
-    from tqdm import tqdm
     from utils.image_utils import read_image_file
 
     test_opt = SealRec()
