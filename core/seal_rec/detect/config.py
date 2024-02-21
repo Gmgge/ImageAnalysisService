@@ -7,8 +7,8 @@ def init_detect_args():
     args = AnalysisArgs()
     args.model_path = os.path.join(project_root, "data/seal/detect/picodet_s_416_coco_sim.onnx")
     args.label_path = os.path.join(project_root, "data/seal/detect/class_names.txt")
-    args.score_thresh = 0.5
-    args.nms_thresh = 0.5
+    args.score_thresh = 0.8
+    args.nms_thresh = 0.6
     return args
 
 

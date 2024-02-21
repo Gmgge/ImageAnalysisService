@@ -71,11 +71,13 @@ if __name__ == '__main__':
     # 构建检测器
     net = PicoDet()
     # 图像读取
-    test_image_path = os.path.join(project_root, r"tests/core/seal/image/seal_1.jpg")
-    test_data = read_image_file(test_image_path)
-    # 预测
-    res_image = net.detect_and_draw(test_data)
-    # 可视化结果
-    res_image = cv2.cvtColor(res_image, cv2.COLOR_RGB2BGR)
-    cv2.imshow("detect_res", res_image)
-    cv2.waitKey(0)
+    test_dir = r"seal_dir"
+    for one_name in os.listdir(test_dir):
+        test_image_path = os.path.join(test_dir, one_name)
+        test_data = read_image_file(test_image_path)
+        # 预测
+        res_image = net.detect_and_draw(test_data)
+        # 可视化结果
+        res_image = cv2.cvtColor(res_image, cv2.COLOR_RGB2BGR)
+        cv2.imshow("detect_res", res_image)
+        cv2.waitKey(0)
