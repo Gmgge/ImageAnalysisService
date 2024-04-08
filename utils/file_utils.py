@@ -1,6 +1,14 @@
 import re
 import os
+import yaml
+
 from conf.service_args import project_root
+
+
+def read_yaml(yaml_path):
+    with open(yaml_path, "rb") as f:
+        data = yaml.load(f, Loader=yaml.Loader)
+    return data
 
 
 def check_dirs_in_path(dirs_name, file_path):
