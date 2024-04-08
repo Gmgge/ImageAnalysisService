@@ -3,7 +3,7 @@ from conf.service_args import project_root
 from utils.file_utils import read_yaml
 
 config_file = os.path.join(project_root, "core/ocr/config.yaml")
-det_model = os.path.join(project_root, "data/ocr/ch/det/zf_det.onnx")
+det_model = os.path.join(project_root, "data/ocr/ch/det/ch_PP-OCRv3_det_infer.onnx")
 cls_model = os.path.join(project_root, "data/ocr/ch/cls/ch_ppocr_mobile_v2.0_cls_infer.onnx")
 rec_model = os.path.join(project_root, "data/ocr/ch/rec/ch_ppocr_mobile_v2.0_rec_infer.onnx")
 
