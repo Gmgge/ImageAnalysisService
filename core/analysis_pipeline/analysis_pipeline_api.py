@@ -33,7 +33,7 @@ data: dict, 其元素为
 router = APIRouter(prefix='/image_analysis', tags=['addition'])
 
 
-@router.post("/analysis_pipeline",
+@router.post("/online_analysis_pipeline",
              responses=openapi_response,
              response_model=ResponseItem,
              response_description=description)
@@ -44,10 +44,26 @@ def online_image_analysis(image: UploadFile = File(), tasks: str = Form(), tasks
     tasks 示例值：["ocr"] 待分析任务列表，必须是["ocr", "seal_rec"]的子集
     tasks_args 示例值 {“ocr”：{...}} 待分析任务对应的参数 预留字段，非必要
     """
-    logger.info("pipeline接收到multipart/form-data请求 image：{}， tasks：{}，tasks_args：{}".format(image.filename,
-                                                                                           eval(tasks),
-                                                                                           eval(tasks_args)))
+    logger.info(f"pipeline接收到multipart/form-data请求 image：{image.filename}， tasks：{eval(tasks)}，"
+                f"tasks_args：{eval(tasks_args)}")
     image_data = read_image_file(image)
     return global_variable.image_analysis_pipeline.analysis_image(image_data,
                                                                   eval(tasks),
                                                                   eval(tasks_args))
+
+
+@router.post("/analysis_pipeline",
+             responses=openapi_response,
+             response_model=ResponseItem,
+             response_description=description)
+def image_analysis(req_item: PipelineItem):
+    """
+    在线图像分析接口 form-data形式
+    image 示例值：二进制文件 form-data形式
+    tasks 示例值：["ocr"] 待分析任务列表，必须是["ocr", "seal_rec"]的子集
+    tasks_args 示例值 {“ocr”：{...}} 待分析任务对应的参数 预留字段，非必要
+    """
+    logger.info(f"pipeline接收到multipart/form-data请求 image：{req_item.image}， tasks：{req_item.tasks}，"
+                f"tasks_args：{req_item.tasks_args}")
+    image_data = read_image_file(req_item.image)
+    return global_variable.image_analysis_pipeline.analysis_image(image_data, req_item.tasks, req_item.tasks_args)
