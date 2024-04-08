@@ -68,7 +68,7 @@ python service_gradio.py
 ```
 
 # 2.参考项目
-1.RapidOCR
-2.PaddleOCR
-3.PaddleDetection
+1. RapidOCR
+2. PaddleOCR
+3. PaddleDetection
 
