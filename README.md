@@ -8,6 +8,7 @@
 
 ## 近期更新点
 - [x] 推出[数据集分享页面](https://github.com/Gmgge/TrOCR-Seal-Recognition/blob/main/DataSet.md)，增加印章检测数据集
+- [x]  推出ocr倾斜情况下，文本行版式恢复
 - [ ]  正在整理印章检测数据，近期将更新印章模型检测交流
 - [ ]  多类型印章检测demo，安装该demo训练你应用方向下的印章类型即可轻松达到90+精度
 
@@ -66,4 +67,8 @@ python service_gradio.py
 6) core 模块中，如果存在**api路由文件，需要自动注册相关路由的，设定router = APIRouter(...)，路由注册函数会搜寻该变量名
 ```
 
+# 2.参考项目
+1.RapidOCR
+2.PaddleOCR
+3.PaddleDetection
 

@@ -7,3 +7,6 @@ pillow
 gradio
 loguru
 tqdm
+fastapi
+gunicorn
+uvicorn
