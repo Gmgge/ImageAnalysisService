@@ -26,11 +26,12 @@ image_analysis_options = {
         "bind": "{}:{}".format(service_config["Web"]["ip"], service_config["Web"]["port"]),  # 绑定的地址与端口号
         "workers": service_config["Web"]["workers"],  # 多进程workers数量
         "worker_class": "uvicorn.workers.UvicornWorker",
+        "threads": service_config["Web"]["threads"],  # 多进程workers数量
         "workers_connections": 1000,  # 最大并发量
         "graceful_timeout": service_config["Web"]["timeout"],  # 超时时间
         "timeout": service_config["Web"]["timeout"],
         "reload": False,
-        "post_fork": post_fork
+        # "post_fork": post_fork
 
     }
 
@@ -58,7 +59,7 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 def gunicorn_sever_run():
     logger.info("当前使用web服务器：gunicorn")
     # 使用gunicorn多进程进行管理，模型在fork之后初始化，以适配GPU下多进程情况
-    image_analysis_app = creat_image_analysis_app(create_pipeline_sign=False)
+    image_analysis_app = creat_image_analysis_app(create_pipeline_sign=True)
     # gunicorn push 到统一日志中
     push_gunicorn_log()
     StandaloneApplication(image_analysis_app, image_analysis_options).run()
