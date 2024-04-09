@@ -57,10 +57,9 @@ class AnalysisPipeline(object):
                     raise e
                 except Exception as e:
                     logger.exception(e)
-                    logger.error("任务：{}分析失败，耗时：{}s".format(task_name, round(time() - start_time, 2)))
+                    logger.error("任务：{}分析失败".format(task_name))
                     current_res = None
-                    # 整合分析结果
-                    logger.info("任务：{}分析结束，耗时：{}s".format(task_name, round(time() - start_time, 2)))
+                logger.info("任务：{}分析结束，耗时：{}s".format(task_name, round(time() - start_time, 2)))
             else:
                 logger.error("请求中存在任务：{}，当前分析端未支持".format(task_name))
                 current_res = None

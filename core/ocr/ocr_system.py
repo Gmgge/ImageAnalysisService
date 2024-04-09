@@ -10,6 +10,7 @@ from core.ocr.tool import compute_line_iou, text_line_angle, get_rotate_crop_ima
     rotate_image_and_boxes, rotate_points, rotate_boxes
 from libs.base.image_analysis import BaseImageAnalysis
 from core.ocr.config import ocr_args
+from utils.log_init import logger
 
 
 class OCR(BaseImageAnalysis):
@@ -79,6 +80,7 @@ class OCR(BaseImageAnalysis):
         if use_rec:
             rec_res, rec_elapse = self.text_rec(img_list)
         ocr_res = self.get_final_res(det_boxes, rec_res, flip_sign)
+        logger.info(f"识别前部分结果为:{ocr_res[:5]}")
         return ocr_res
 
     def auto_text_det(self, img: np.ndarray) -> Tuple[Optional[np.ndarray], float]:
