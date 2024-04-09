@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
@@ -13,11 +14,12 @@ def add_exception_handlers(app):
         :param request: 请求头信息
         :param exc: 异常对象
         """
-        response_data = {"code": 422,
+        response_data = {"status": 422,
                          "message": str(exc.errors()),
                          "data": {},
-                         "cost": 0.0}
-        return JSONResponse(content=response_data, status_code=response_data["code"])
+                         "cost": 0.0,
+                         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        return JSONResponse(content=response_data, status_code=response_data["status"])
 
     # 重载分析异常处理器
     @app.exception_handler(AnalysisException)
@@ -27,9 +29,10 @@ def add_exception_handlers(app):
         :param request: 请求头信息
         :param exc: 异常对象
         """
-        response_data = {"code": exc.status_code,
+        response_data = {"status": exc.status_code,
                          "message": str(exc.detail),
                          "data": {},
-                         "cost": 0.0}
-        return JSONResponse(content=response_data, status_code=response_data["code"])
+                         "cost": 0.0,
+                         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        return JSONResponse(content=response_data, status_code=response_data["status"])
 

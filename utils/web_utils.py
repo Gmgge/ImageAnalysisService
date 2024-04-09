@@ -3,6 +3,7 @@ import importlib
 import socket
 import os
 import re
+from datetime import datetime
 from utils.log_init import logger
 from conf.service_args import service_config, open_models
 from utils.file_utils import get_import_path, check_dirs_in_path
@@ -11,18 +12,21 @@ from pydantic import BaseModel
 
 class BaseResponseItem(BaseModel):
     cost: float
-    code: int
     message: str
+    status: int
+    timestamp: str
 
 
 def add_time_info(function_name):
     def func_in(*args, **kwargs):
         start_time = time.time()
-        res_json = {"data": function_name(*args, **kwargs)}
+        analysis_res = function_name(*args, **kwargs)
         used_time = time.time() - start_time
-        res_json["cost"] = round(used_time, 2)
-        res_json["code"] = 200
-        res_json["message"] = "ok"
+        res_json = {"data": analysis_res,
+                    "cost": round(used_time, 2),
+                    "status": 200,
+                    "message": "ok",
+                    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
         return res_json
     return func_in
 

@@ -43,6 +43,8 @@ class AnalysisPipeline(object):
         """
         analysis_res = dict()
         for task_name in tasks:  # 任务名task_name对应分析模块analysis_module
+            # 默认分析结果为None
+            current_res = None
             if task_name in self.analysis_modules.keys():
                 # 根据任务名调用相应分析模块进行分析
                 start_time = time()
@@ -58,11 +60,9 @@ class AnalysisPipeline(object):
                 except Exception as e:
                     logger.exception(e)
                     logger.error("任务：{}分析失败".format(task_name))
-                    current_res = None
                 logger.info("任务：{}分析结束，耗时：{}s".format(task_name, round(time() - start_time, 2)))
             else:
                 logger.error("请求中存在任务：{}，当前分析端未支持".format(task_name))
-                current_res = None
             analysis_res[task_name] = current_res
         return analysis_res
 
