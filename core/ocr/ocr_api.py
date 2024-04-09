@@ -4,6 +4,7 @@ from fastapi import APIRouter
 from utils.log_init import logger
 from utils.image_utils import read_image_file
 from utils.web_exception import openapi_response
+from conf.service_args import service_config
 
 
 # 构建本地文件请求体参数
@@ -26,7 +27,7 @@ data: dict, 其元素为
 """
 
 # 构建路由
-router = APIRouter(prefix='/image_analysis', tags=['addition'])
+router = APIRouter(prefix=f'/{service_config["ServiceName"]}', tags=['addition'])
 
 
 @router.post("/ocr",

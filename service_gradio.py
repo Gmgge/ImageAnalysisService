@@ -1,7 +1,6 @@
 import gradio as gr
 import os
 from core.analysis_pipeline.analysis_pipeline import AnalysisPipeline
-from core.analysis_pipeline.analysis_pipeline_args import task_candidate_list
 from utils.image_utils import read_image_file, check_image_file
 from utils.log_init import logger
 from utils.web_utils import is_port_usable
@@ -18,7 +17,6 @@ logger.info("分析模块初始化成功")
 
 # 构建任务名列表
 analysis_tasks = list(service_config["ModuleSwitch"].keys())
-analysis_tasks.remove("analysis_pipeline")
 
 
 def call_analysis(image_data, task_name_):

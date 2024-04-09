@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from fastapi import APIRouter, Query
 from typing import List
 from utils.log_init import logger
-from core.analysis_pipeline.analysis_pipeline_args import task_candidate_list
+from conf.service_args import service_config
 from utils.image_utils import read_image_file
 from utils.web_exception import openapi_response
 from utils.web_utils import BaseResponseItem
@@ -14,7 +14,7 @@ from utils.web_utils import BaseResponseItem
 class PipelineItem(BaseModel):
     image: str
     tasks: List[str] = Query(
-        description="Candidate is a subset of:" + str(task_candidate_list))
+        description="Candidate is a subset of:" + str(list(service_config["ModuleSwitch"].keys())))
     tasks_args: dict = {}
 
 
@@ -30,7 +30,7 @@ data: dict, 其元素为
 """
 
 # 构建路由
-router = APIRouter(prefix='/image_analysis', tags=['addition'])
+router = APIRouter(prefix=f'/{service_config["ServiceName"]}', tags=['addition'])
 
 
 @router.post("/online_analysis_pipeline",

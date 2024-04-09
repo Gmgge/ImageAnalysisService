@@ -2,7 +2,7 @@ import os
 import sys
 import platform
 import logging
-from conf.service_args import service_config, service_name
+from conf.service_args import service_config
 from loguru import logger
 
 
@@ -46,7 +46,7 @@ def push_gunicorn_log():
 # 配置日志路径
 log_root = service_config["Log"]["windows_save_root"] if platform.system() == "Windows" \
     else service_config["Log"]["linux_save_root"]
-log_path = os.path.join(log_root, service_name, service_name)
+log_path = os.path.join(log_root, service_config["ServiceName"], service_config["ServiceName"])
 # 配置日志格式
 log_format = "{time:YYYY-MM-DD at HH:mm:ss} | {level} | Process: {process} | {file}:{line} | {message}"
 log_config = {"rotation": "00:00:00", "format": log_format, "enqueue": True,

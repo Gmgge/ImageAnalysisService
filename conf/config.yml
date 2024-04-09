@@ -1,6 +1,7 @@
+ServiceName: ImageAnalysis
+
 ModuleSwitch:
 # 模块开关，请注意该名称需要与core中对应模块的文件夹名相同
-  "analysis_pipeline": True
   "ocr": True
   "seal_rec": True
 
