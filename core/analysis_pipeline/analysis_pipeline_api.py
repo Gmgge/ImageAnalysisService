@@ -58,12 +58,12 @@ def online_image_analysis(image: UploadFile = File(), tasks: str = Form(), tasks
              response_description=description)
 def image_analysis(req_item: PipelineItem):
     """
-    在线图像分析接口 form-data形式
-    image 示例值：二进制文件 form-data形式
+    本地图像分析接口 application/json形式
+    image 示例值：文件路径
     tasks 示例值：["ocr"] 待分析任务列表，必须是["ocr", "seal_rec"]的子集
     tasks_args 示例值 {“ocr”：{...}} 待分析任务对应的参数 预留字段，非必要
     """
-    logger.info(f"pipeline接收到multipart/form-data请求 image：{req_item.image}， tasks：{req_item.tasks}，"
+    logger.info(f"pipeline接收到application/json请求 image：{req_item.image}， tasks：{req_item.tasks}，"
                 f"tasks_args：{req_item.tasks_args}")
     image_data = read_image_file(req_item.image)
     return global_variable.image_analysis_pipeline.analysis_image(image_data, req_item.tasks, req_item.tasks_args)
