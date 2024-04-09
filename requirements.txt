@@ -10,3 +10,4 @@ tqdm
 fastapi
 gunicorn
 uvicorn
+pydantic
