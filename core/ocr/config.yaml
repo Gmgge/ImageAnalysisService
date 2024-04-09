@@ -11,7 +11,7 @@ Det:
     use_cuda: false
     num_threads: 1
     execution_mode: 1  # <ExecutionMode.ORT_PARALLEL: 1> <ExecutionMode.ORT_SEQUENTIAL: 0>
-    model_path: models/ch_PP-OCRv4_det_infer.onnx
+    model_path: data/ocr/ch/det/ch_PP-OCRv3_det_infer.onnx
     limit_side_len: 960
     limit_type: max
     thresh: 0.3
@@ -25,7 +25,7 @@ Cls:
     use_cuda: false
     num_threads: 1
     execution_mode: 1  # <ExecutionMode.ORT_PARALLEL: 1> <ExecutionMode.ORT_SEQUENTIAL: 0>
-    model_path: models/ch_ppocr_mobile_v2.0_cls_infer.onnx
+    model_path: data/ocr/ch/cls/ch_ppocr_mobile_v2.0_cls_infer.onnx
     cls_image_shape: [3, 48, 192]
     cls_batch_num: 6
     cls_thresh: 0.9
@@ -35,6 +35,6 @@ Rec:
     use_cuda: false
     num_threads: 1
     execution_mode: 1  # <ExecutionMode.ORT_PARALLEL: 1> <ExecutionMode.ORT_SEQUENTIAL: 0>
-    model_path: models/ch_PP-OCRv4_rec_infer.onnx
+    model_path: data/ocr/ch/rec/ch_ppocr_mobile_v2.0_rec_infer.onnx
     rec_img_shape: [3, 32, 320]
     rec_batch_num: 6
