@@ -4,9 +4,10 @@ import conf.global_variable as global_variable
 from core.analysis_pipeline.analysis_pipeline import AnalysisPipeline
 from utils.log_init import logger
 from utils.web_utils import is_port_usable
-from conf.service_args import service_config, router_file_root
-from utils.web_utils import auto_include_router
+from conf.service_args import service_config
 from web.exception_handlers import add_exception_handlers
+from core.analysis_pipeline import analysis_pipeline_api
+from core.ocr import ocr_api
 
 
 def creat_image_analysis_app(create_pipeline_sign: bool = True):
@@ -25,9 +26,10 @@ def creat_image_analysis_app(create_pipeline_sign: bool = True):
         global_variable.image_analysis_pipeline = AnalysisPipeline()
         logger.info("分析模块初始化成功")
 
-    # 按照规则自动注册路由，如果需要自动注册，请按照readme中的规范定义路由api文件
+    # 注册路由
     logger.info("开始注册web路由模块")
-    auto_include_router(app, router_file_root)
+    app.include_router(analysis_pipeline_api.router)
+    app.include_router(ocr_api.router)
 
     # 重载异常情况处理器
     add_exception_handlers(app)
