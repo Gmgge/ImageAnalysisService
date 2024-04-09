@@ -3,7 +3,7 @@ import numpy as np
 import onnxruntime
 import os
 import statistics
-from scipy.special import softmax
+from utils.compute.logsumexp import softmax
 from core.seal_rec.rec.config import trocr_args
 from core.seal_rec.rec.tool import read_vocab, decode_text
 from utils.image_utils import normalize
