@@ -48,7 +48,8 @@ log_root = service_config["Log"]["windows_save_root"] if platform.system() == "W
     else service_config["Log"]["linux_save_root"]
 log_path = os.path.join(log_root, service_config["ServiceName"], service_config["ServiceName"])
 # 配置日志格式
-log_format = "{time:YYYY-MM-DD at HH:mm:ss} | {level} | Process: {process} | {file}:{line} | {message}"
+log_format = "{time:YYYY-MM-DD at HH:mm:ss} | {level} | Process: {process} | Thread:{thread} | {file}:{line} | {" \
+             "message}"
 log_config = {"rotation": "00:00:00", "format": log_format, "enqueue": True,
               "retention": service_config["Log"]["retention_time"], "compression": "zip"}
 # 设置日志输出
