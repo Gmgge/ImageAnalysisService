@@ -1,3 +1,5 @@
+import base64
+
 import numpy as np
 import cv2
 import os
@@ -5,6 +7,8 @@ import imghdr
 from PIL import Image
 from io import BytesIO
 from utils.log_init import logger
+from conf.global_constant import IMG_PATH, IMG_STREAM
+from starlette.datastructures import UploadFile
 from PIL import UnidentifiedImageError
 from utils.web_exception import FileNotExistException, UnsupportedParametersException, UnsupportedFileTypeException
 
@@ -14,16 +18,21 @@ def check_image_file(path):
     return any([path.lower().endswith(e) for e in img_end])
 
 
-def read_image_file(image):
+def read_image_file(image, mode=IMG_PATH):
     """
     读取图像信息,并根据推理需要转换为三通道图像，支持本地文件与form-data数据
+    当image为form_data时，mode参数无效
     """
     # 本地文件检查
-    if isinstance(image, str):
+    if isinstance(image, str) and mode == IMG_PATH:
         if not os.path.isfile(image):
             raise FileNotExistException(image)
+    # base64 读取
+    elif isinstance(image, str) and mode == IMG_STREAM:
+        binary_img_data = base64.b64decode(image)
+        image = BytesIO(binary_img_data)
     # form_data 文件读取
-    elif image.content_type is not None:
+    elif isinstance(image, UploadFile):
         image = BytesIO(image.file.read())
     # 其他形式数据
     else:

@@ -1,10 +1,12 @@
 import conf.global_variable as global_variable
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
+from typing import List
 from fastapi import APIRouter
 from utils.log_init import logger
 from utils.image_utils import read_image_file
 from utils.web_exception import openapi_response
 from conf.service_args import service_config
+from conf.global_constant import IMG_PATH, IMG_STREAM
 
 
 # 构建本地文件请求体参数
@@ -14,12 +16,14 @@ class PipelineItem(BaseModel):
 
 
 # 返回体信息
-class ResponseItem(BaseModel):
+class OneResponseItem(BaseModel):
     data: dict
     message: str
     status: int
     timestamp: str
 
+
+ResponseItem = RootModel[List[OneResponseItem]]
 
 description = """
 data: dict, 其元素为
@@ -37,12 +41,15 @@ router = APIRouter(prefix=f'/{service_config["ServiceName"]}', tags=['addition']
 def ocr(req_item: PipelineItem):
     """
     本地图像分析接口 application/json形式
-    image 示例值：文件路径
-    tasks 示例值：["ocr"] 待分析任务列表，必须是["ocr", "seal_rec"]的子集
-    tasks_args 示例值 {“ocr”：{...}} 待分析任务对应的参数 预留字段，非必要
+    imgstring:文件路径，文件base64编码
+    mode:文件传输形式 值域 [imgpath:本地文件路径, imgstream:文件base64编码]
     """
-    logger.info(f"ocr 接收到 application/json 请求 imgstring：{req_item.imgstring}， mode：{req_item.mode}")
-    image_data = read_image_file(req_item.imgstring)
+    if req_item.mode == IMG_STREAM:
+        img_info = req_item.imgstring[:20]
+    elif req_item.mode == IMG_PATH:
+        img_info = req_item.imgstring
+    logger.info(f"ocr 接收到 application/json 请求 imgstring：{img_info}， mode：{req_item.mode}")
+    image_data = read_image_file(req_item.imgstring, req_item.mode)
     analysis_res = global_variable.image_analysis_pipeline.analysis_image(image_data, ["ocr"])
     # 兼容旧接口
     ocr_res = {"data": {"content": analysis_res["data"]["ocr"],
@@ -53,4 +60,4 @@ def ocr(req_item: PipelineItem):
                "status": analysis_res["status"],
                "timestamp": analysis_res["timestamp"]}
 
-    return ocr_res
+    return [ocr_res]
