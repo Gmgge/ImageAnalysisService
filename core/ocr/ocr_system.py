@@ -35,13 +35,14 @@ class OCR(BaseImageAnalysis):
         img = self.load_img(image)
         # 初始化默认结果
         det_boxes, cls_res, rec_res = None, None, None
+        ocr_res = ""
         det_elapse, cls_elapse, rec_elapse = 0.0, 0.0, 0.0
         img_list = []
         # 文字区域检测
         if use_det:
             det_boxes, det_elapse = self.auto_text_det(img)
             if det_boxes is None:
-                return None, None
+                return ocr_res
             # # 绘制文本行以进行debug
             # det_boxes = np.asarray(det_boxes).astype(np.int32)
             # det_boxes = det_boxes[:, :4, :]
@@ -127,11 +128,12 @@ class OCR(BaseImageAnalysis):
         return img_crop_list
 
     def get_final_res(self, det_boxes, rec_res, flip_sign):
+        ocr_res = ""
         if det_boxes is None or rec_res is None:
-            return None, None
+            return ocr_res
         det_boxes, rec_res = self.filter_result(det_boxes, rec_res)
         if len(rec_res) <= 0:
-            return None, None
+            return ocr_res
         ocr_res = self.row_format_recovery(det_boxes, rec_res, flip_sign)
         return ocr_res
 
