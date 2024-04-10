@@ -3,6 +3,7 @@ import importlib
 import socket
 import os
 import re
+from anyio import to_thread
 from datetime import datetime
 from utils.log_init import logger
 from conf.service_args import service_config, open_models
@@ -28,6 +29,7 @@ def add_time_info(function_name):
                     "message": "ok",
                     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
         return res_json
+
     return func_in
 
 
@@ -97,3 +99,8 @@ def auto_include_router(app, router_root, module_switch=open_models, router_file
                     app.include_router(sub_router)
                     logger.info("路由文件：{} 注册成功".format(name))
 
+
+def set_fastapi_thread_pool(app, max_thread_count=1):
+    @app.on_event("startup")
+    def set_thread_pool_counts():
+        to_thread.current_default_thread_limiter().total_tokens = max_thread_count

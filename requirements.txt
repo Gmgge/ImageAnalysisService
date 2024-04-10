@@ -10,3 +10,5 @@ fastapi
 gunicorn
 uvicorn
 pydantic
+starlette
+anyio

@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request
 import conf.global_variable as global_variable
 from core.analysis_pipeline.analysis_pipeline import AnalysisPipeline
 from utils.log_init import logger
-from utils.web_utils import is_port_usable
+from utils.web_utils import is_port_usable, set_fastapi_thread_pool
 from conf.service_args import service_config
 from web.exception_handlers import add_exception_handlers
 from core.analysis_pipeline import analysis_pipeline_api
@@ -19,6 +19,9 @@ def creat_image_analysis_app(create_pipeline_sign: bool = True):
     # 构建web api
     logger.info("开始构建web app")
     app = FastAPI()
+
+    # 限制fastapi生成的线程池数量
+    set_fastapi_thread_pool(app, service_config["Web"]["threads"])
 
     # 构建分析模块 为兼容gunicorn下GPU调度，需要在post_fork中初始化模型
     if create_pipeline_sign:
