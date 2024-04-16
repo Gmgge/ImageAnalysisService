@@ -65,8 +65,8 @@ class OCR(BaseImageAnalysis):
             img_list, cls_res, flip_sign, cls_elapse = self.text_cls(img_list)
             # 列表翻转
             if flip_sign:
-                img_list = np.flip(np.asarray(img_list, dtype=object), axis=0)
-                det_boxes = np.flip(np.asarray(det_boxes), axis=0)
+                img_list = img_list[::-1]
+                det_boxes = det_boxes[::-1]
             # # 绘制文本行以进行debug
             # det_boxes = np.asarray(det_boxes).astype(np.int32)
             # det_boxes = det_boxes[:, :4, :]
