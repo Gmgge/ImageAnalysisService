@@ -1,5 +1,5 @@
 from core.seal_rec.detect.picodet import PicoDet
-from core.seal_rec.rec.trocr_torch import TorchEncoderDecoder
+from core.seal_rec.rec.trocr import OnnxEncoderDecoder
 from libs.base.image_analysis import BaseImageAnalysis
 from core.seal_rec.config import seal_rec_args
 
@@ -12,7 +12,7 @@ class SealRec(BaseImageAnalysis):
     @staticmethod
     def init_analysis_module():
         seal_det_module = PicoDet()
-        seal_rec_module = TorchEncoderDecoder()
+        seal_rec_module = OnnxEncoderDecoder()
         return seal_det_module, seal_rec_module
 
     def analysis(self, image):
@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     test_opt = SealRec()
     # 图像读取
-    image_root = r"C:\Users\GM\Desktop\seal-0023\seal\imgs"
+    image_root = r"./seal_image/"
     for image_name in os.listdir(image_root):
         image_path = os.path.join(image_root, image_name)
         test_data = read_image_file(image_path)

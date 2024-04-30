@@ -21,16 +21,17 @@ class OnnxEncoder(object):
 
 class OnnxDecoder(object):
     def __init__(self, model_path):
-        self.model = onnxruntime.InferenceSession(model_path, providers=onnxruntime.get_available_providers())
+        self.model = onnxruntime.InferenceSession(model_path)
         self.input_names = {input_key.name: idx for idx, input_key in enumerate(self.model.get_inputs())}
 
     def __call__(self, input_ids,
                  encoder_hidden_states,
                  attention_mask):
-        onnx_inputs = {"input_ids": input_ids,
-                       "attention_mask": attention_mask,
-                       "encoder_hidden_states": encoder_hidden_states}
-
+        input_info = {"input_ids": input_ids,
+                      "attention_mask": attention_mask,
+                      "encoder_hidden_states": encoder_hidden_states}
+        # 兼容不同版本的模型输入 todo 未来统一模型输入值
+        onnx_inputs = {key: input_info[key] for key in self.input_names}
         onnx_output = self.model.run(['logits'], onnx_inputs)
         return onnx_output
 
