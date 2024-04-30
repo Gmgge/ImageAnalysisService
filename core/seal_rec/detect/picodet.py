@@ -44,8 +44,11 @@ class PicoDet(object):
             expect_boxes = boxes[:, 0] > -1
             boxes = boxes[expect_boxes, :]
             # 恢复坐标尺度
-            boxes[:, 2], boxes[:, 4] = boxes[:, 2]/scale_factor[0][1], boxes[:, 4]/scale_factor[0][1]
-            boxes[:, 3], boxes[:, 5] = boxes[:, 3]/scale_factor[0][0], boxes[:, 5]/scale_factor[0][0]
+            boxes[:, 2], boxes[:, 4] = boxes[:, 2] / scale_factor[0][1], boxes[:, 4] / scale_factor[0][1]
+            boxes[:, 3], boxes[:, 5] = boxes[:, 3] / scale_factor[0][0], boxes[:, 5] / scale_factor[0][0]
+            # 处理异常预测的负值
+            box_position = boxes[:, 2:]
+            box_position[box_position < 0] = 0
         return boxes
 
     def detect_and_draw(self, src_img):
@@ -68,6 +71,7 @@ if __name__ == '__main__':
     import os
     from tqdm import tqdm
     from utils.image_utils import read_image_file
+
     # 构建检测器
     net = PicoDet()
     # 图像读取
